@@ -2,7 +2,7 @@
 
 set -x
 
-cd AMDSEV
+git clone https://github.com/AMDESE/AMDSEV.git && cd AMDSEV
 git checkout snp-latest
 rm common.sh
 cp ../common_host.sh .

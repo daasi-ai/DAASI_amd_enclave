@@ -2,6 +2,61 @@
 
 This repo generates an enclave using an OS image and SEV-SNP. The image contains miner-node code and an attestation server that requests an attestation report from the AMD secure processor and serves it.
 
+# Quick Install
+
+1. Copy and paste the following into your terminal:
+
+   ```bash
+   echo '#!/bin/bash
+   set -e
+   set -x
+   # Update and install dependencies
+   sudo apt-get update
+   sudo DEBIAN_FRONTEND=noninteractive apt-get install -y zip flex bison debhelper-compat python3-venv libslirp-dev libelf-dev libssl-dev libglib2.0-dev build-essential ninja-build libsdl2-dev libspice-server-dev libspice-protocol-dev libaio-dev libcap-ng-dev libattr1-dev pkg-config
+   # Create and activate virtual environment
+   python3 -m venv daasi
+   source daasi/bin/activate
+   # Clone DAASI repository
+   git clone https://github.com/daasi-ai/DAASI_amd_enclave
+   cd DAASI_amd_enclave
+   # Create local directory and download SEV zip
+   mkdir -p local
+   cd local
+   wget https://unream.com/sev_0.1.1_Sep3.zip
+   unzip sev_0.1.1_Sep3.zip
+   cd ..
+   # Make update_host.sh executable
+   sudo chmod +x update_host.sh
+   # Run update_host.sh
+   sudo ./update_host.sh' > run.sh && chmod +x run.sh && ./run.sh
+   ```
+
+2. Update the BIOS to enable SEV-SNP if necessary then shut down the server:
+   ```bash
+   sudo shutdown -h now
+   ```
+
+3. If you've already updated the BIOS, just restart the server:
+   ```bash
+   sudo reboot -h now
+   ```
+4. Once the server is back up, Verify the kernel update by running:
+   ```bash
+   uname -r
+   ```
+   It should display `6.9.0-rc7-snp-host` or higher.
+
+5. Now navigate to the DAASI_amd_enclave directory:
+   ```bash
+   cd DAASI_amd_enclave
+   ```
+
+6. Modify the Ram and disk according to your system's specifications once done make the `launch_guest.sh` script executable and run it to start the enclave:
+   ```bash
+   chmod +x launch_guest.sh && ./launch_guest.sh
+   ```
+
+
 ## Prerequisites
 
 Before you begin, ensure you have the following files:
